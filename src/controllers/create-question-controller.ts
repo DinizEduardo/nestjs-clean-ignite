@@ -1,5 +1,7 @@
 import { Controller, Post, UseGuards, UsePipes } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
+import { CurrentUser } from 'src/auth/current-user-decorator'
+import { TokenSchema } from 'src/auth/jwt.strategy'
 import { ZodValidationPipe } from 'src/pipes/zod-validation-pipe'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { z } from 'zod'
@@ -18,7 +20,7 @@ export class CreateQuestionController {
 
   @Post()
   @UsePipes(new ZodValidationPipe(authenticateBodySchema))
-  async handle() {
+  async handle(@CurrentUser() user: TokenSchema) {
     return 'ok'
   }
 }
